@@ -25,7 +25,7 @@ void acceptConnByEpoll(int sockfd){
       //check some events for errors?
       if (sockfd == events[i].data.fd) {
         sockaddr_in cli_addr;
-        socklen_t addrlen;
+        socklen_t addrlen = sizeof(cli_addr);
         int accsockfd = accept (sockfd, (sockaddr*)&cli_addr, &addrlen);
         if (accsockfd == -1) {
           ERROR;

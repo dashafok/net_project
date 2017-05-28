@@ -46,9 +46,9 @@ int main(int argc, const char* argv[]) {
         port_num = atoi (argv[i+1]);
         serv_addr.sin_port = htons (port_num); //value in TCP/IP network byte order
         //std::cout << "port_num = " << port_num << std::endl;
-        if (!port_num) {
+        /*if (!port_num) {
           ERROR;
-        }
+        }/**/
       } else if (strcmp(argv[i], "--multiplexer") == 0) {
         if (strcmp(argv[i+1], "select") == 0) {
           multip_sel = 1;

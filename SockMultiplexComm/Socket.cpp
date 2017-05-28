@@ -45,11 +45,13 @@ void *web(void *arg) {
     json_object * jobj_str;
     json_object * jobj_rou;
     if (!json_object_object_get_ex(jobj, "str", &jobj_str)) {
-      ERROR;
+      sprintf(buffer, "HTTP/1.0 Not Found\t\nServer: bzz\t\nContent-Type: application/json\t\nContent-length: 0\t\nConnection: close\t\n\t\n");
+      send(data.sockfd, buffer, sizeof(buffer),0);
       pthread_exit(NULL);
     }
     if (!json_object_object_get_ex(jobj, "rounds", &jobj_rou)) {
-    	ERROR;
+      sprintf(buffer, "HTTP/1.0 Not Found\t\nServer: bzz\t\nContent-Type: application/json\t\nContent-length: %d\t\nConnection: close\t\n\t\n");
+      send(data.sockfd, buffer, sizeof(buffer),0);
         pthread_exit(NULL);
     }
 
@@ -64,8 +66,9 @@ void *web(void *arg) {
 
     char str[1024];
     //sprintf(str, "{\"str\": \"%s\", \"rounds\": %d}", json_object_get_string(jobj_str), json_object_get_int(jobj_rou));
-    sprintf(str, "HTTP/1.0 200 OK\t\nServer: bzz\t\nContent-Type: application/json\t\nContent-length: %d\t\nConnection: close\t\n\t\n%s\t\n", strlen(hash), hash);
+    sprintf(str, "HTTP/1.0 200 OK\t\nServer: bzz\t\nContent-Length: %d\t\nContent-Type: application/json\t\nConnection: close\t\n\t\n%s\t\n", strlen(hash), hash);
     send(data.sockfd, str, sizeof(str),0);
+    close(data.sockfd);
 /*
     std::cout << "> HTTP/1.0 200 OK\n\t";
     std::cout << "> Server: bzz\n\t";
