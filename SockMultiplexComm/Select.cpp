@@ -1,6 +1,8 @@
 #include "Select.hpp"
 
-void acceptConnBySelect(const int sockfd) {
+void *acceptConnBySelect(void *arg) {
+  thread_data data = *(thread_data *)arg;
+  const int sockfd = data.sockfd;
   fd_set rfds, afds;
   FD_ZERO(&afds);
   FD_ZERO(&rfds);

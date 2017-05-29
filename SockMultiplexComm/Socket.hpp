@@ -24,6 +24,8 @@
 #include <sys/socket.h>
 #include <sys/select.h>
 #include <sys/epoll.h>
+#include <sys/types.h>
+#include <sys/stat.h>
 #include <json/json.h>
 #include <crypt.h>
 #include <fcntl.h>
@@ -42,7 +44,7 @@ struct Multiplexer {
   virtual ~Multiplexer () = 0;
 };
 
-void acceptConnBySelect(const int sockfd);
+void *acceptConnBySelect(void *arg);
 void acceptConnByEpoll(const int sockfd);
 
 #endif /* PCEUDOCODE_HPP_ */

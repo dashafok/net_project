@@ -10,7 +10,7 @@
 
 #include "Socket.hpp"
 
-/*struct SelectMultiplexer : Multiplexer {
+struct SelectMultiplexer : Multiplexer {
 private:
 	char name [7];
 	fd_set set;

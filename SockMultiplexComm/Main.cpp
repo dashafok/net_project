@@ -1,5 +1,4 @@
 #include "Socket.hpp"
-#include "ArgumentParser.hpp"
 
 #define DATA_SIZE 14
 #define LISTEN_BACKLOG 5 //the maximum length to which the queue of pending connections for sockfd may grow
@@ -84,11 +83,27 @@ int main(int argc, const char* argv[]) {
 
   std::cout << "Start receiving connections ..." << std::endl;
 
-  if (multip_sel) {
-    acceptConnBySelect(sockfd);
+  int pid = fork();
+  if(pid < 0) {
+    ERROR;
+  }
+  if (!pid) {
+    umask(0);
+    setsid();
+    chdir("/");
+
+    thread_data data = {sockfd};
+    if (multip_sel) {
+      acceptConnBySelect((void *)&data);
+    } else {
+      acceptConnByEpoll(sockfd);
+    }
+
+    close(STDIN_FILENO);
+    close(STDOUT_FILENO);
+    close(STDERR_FILENO);
   } else {
-    acceptConnByEpoll(sockfd);
+    return 0;
   }
 
-  return 0;
 }
